@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
 
-#
+
 # class Permission(models.Model):
 #
 #     CRUD = [
@@ -26,7 +26,3 @@ from django.utils.translation import gettext_lazy as _
 Group.add_to_class('users', models.ManyToManyField(
         User, verbose_name=_("users"), blank=True,
     ))
-
-
-
-
