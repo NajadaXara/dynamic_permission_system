@@ -1,17 +1,20 @@
 ## Dynamic Permission System with Django Rest Framework
 The system allow the assignment of Groups or Permissions to generic users. 
-
-A user can be assigned one or more groups, and one or more specific permissions can also be assigned. Therefore, individual permissions assigned to users take precedence over those of the groups.
-A user with sufficient permissions can create a custom group. In this group, the user creating it can assign permissions related to the permissions currently available to the user, and equal to or lower in degree among the available permissions.
+Users will be able to assign one or more groups, both system and custom, and in addition to the groups, specific permissions can also be assigned. 
+Based on the groups and permissions assigned to the user, they will be able to perform certain actions.
 
 ## ERD schema (graphical representation of the database)
 ![db schema](IAM/static/img/ERD-schema.png "Entity Relationship Diagram")
 
 ### Users
-Can only use "get" method to list users and their details. Users are not managed with DRF.
+Can only use "GET" & "PATCH" methods to list & update users. They are not managed with DRF.
+A user can be assigned one or more groups, and one or more specific permissions can also be assigned. 
+Therefore, individual permissions assigned to users take precedence over those of the groups.
 
 ### Groups
-There will be a system group that cannot be modified, called "SuperAdmin" which will have all platform permissions.
+There will be a system group that cannot be modified, called "SuperAdmin" which will perform as it has all platform permissions.
+Users in this group are superusers.
+A user with sufficient permissions can create a custom group. 
  
 A group is represented by the following fields:
 - group name
@@ -19,6 +22,9 @@ A group is represented by the following fields:
 - users belonging to the group
 
 ### Permissions
+A user with sufficient permissions can add, in available groups, permissions related to the permissions 
+currently available to the user, and equal to or lower in degree among the available permissions.
+
 A permission is represented by the following fields:
 - name
 - type of permission (create, edit, delete, view)
@@ -27,8 +33,7 @@ A permission is represented by the following fields:
 
 Permissions can be of two types:
 - Class permissions are pre-existing in the platform and therefore concern all entities present in the platform itself.
-Instance permissions, on the other hand, are created automatically at the creation of any resource that requires a permission (so everything), and therefore represent the ability to perform one of the 4 possible actions, already described above, on the specific resource.
-- Users will be able to assign one or more groups, both system and custom, and in addition to the groups, specific permissions can also be assigned. Based on the groups and permissions assigned to the user, they will be able to perform certain actions.
+- Instance permissions, on the other hand, are created automatically at the creation of any resource that requires a permission (so everything), and therefore represent the ability to perform one of the 4 possible actions, already described above, on the specific resource.
 
 
 ## Set-up

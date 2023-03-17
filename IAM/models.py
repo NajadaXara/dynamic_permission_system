@@ -1,6 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
-from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import pre_delete, pre_save
+from django.dispatch import receiver
+from .exceptions import *
+
+
+@receiver([pre_save, pre_delete], sender=Group)
+def guard_super_admin_group(sender, instance, **kwargs):
+    if instance.name == 'SuperAdmin':
+        raise NotAllowed()
 
 
 # class Permission(models.Model):
@@ -16,13 +24,10 @@ from django.utils.translation import gettext_lazy as _
 #     type = models.CharField(choices=CRUD, max_length=2)
 #     # associated specific resource (optional),
 #     # if null then it is a class permission
+
+#     TODO: resource = content_type?
 #     resource = models.SlugField(unique=True, max_length=255)
 #     # inversely ordered number indicating the hierarchy among permissions
 #     degree = models.IntegerField()
 #     # class or instance
 #     category = models.SlugField(unique=True, max_length=255)
-
-
-Group.add_to_class('users', models.ManyToManyField(
-        User, verbose_name=_("users"), blank=True,
-    ))
