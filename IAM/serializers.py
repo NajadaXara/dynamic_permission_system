@@ -4,12 +4,7 @@ from IAM.models import Group
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    users = serializers.StringRelatedField(many=True, source='user_set')
-    # TODO: Use SlugRelatedField (writable) instead of StringRelatedField (readonly)
-    # users = serializers.SlugRelatedField(
-    #     slug_field='username',
-    #     queryset=User.objects.all()
-    # )
+    users = serializers.StringRelatedField(many=True, source='user_set', required=False)
 
     class Meta:
         model = Group

@@ -13,7 +13,7 @@ Therefore, individual permissions assigned to users take precedence over those o
 
 ### Groups
 There will be a system group that cannot be modified, called "SuperAdmin" which will perform as it has all platform permissions.
-Users in this group are superusers.
+Users in this group are superusers. Only superusers can add users to the SuperAdmin group.
 A user with sufficient permissions can create a custom group. 
  
 A group is represented by the following fields:

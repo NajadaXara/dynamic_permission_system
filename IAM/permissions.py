@@ -20,8 +20,7 @@ class CRUDPermissions(permissions.DjangoObjectPermissions):
 
         queryset = self._queryset(view)
         perms = self.get_required_permissions(request.method, queryset.model)
-        p = request.user.has_perms(perms)
-        return p
+        return request.user.has_perms(perms)
 
     def has_object_permission(self, request, view, obj):
         # authentication checks have already executed via has_permission
