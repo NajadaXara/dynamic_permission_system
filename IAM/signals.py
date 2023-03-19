@@ -1,13 +1,17 @@
 from django.db.models.signals import pre_delete, pre_save, m2m_changed
-from django.contrib.auth.models import User, Group
 from django.dispatch import receiver
+from .models import *
 from .exceptions import *
 
 
 @receiver([pre_save, pre_delete], sender=Group)
 def guard_super_admin_group(sender, instance, **kwargs):
-    if instance.name == 'SuperAdmin':
-        raise NotAllowed()
+    try:
+        group_id = Group.objects.get(name='SuperAdmin').id
+        if not kwargs.get("raw", False) and instance.id == group_id:
+            raise NotAllowed()
+    except Exception:
+        pass
 
 
 def update_superuser(sender, instance, action, pk_set, **kwargs):

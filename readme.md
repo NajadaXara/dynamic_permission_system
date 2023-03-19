@@ -28,7 +28,7 @@ currently available to the user, and equal to or lower in degree among the avail
 A permission is represented by the following fields:
 - name
 - type of permission (create, edit, delete, view)
-- associated specific resource (optional), if null then it is a class permission
+- associated specific resource (content type)
 - degree, which is an inversely ordered number indicating the hierarchy among permissions. The larger it is, the more it concerns specific resources, the smaller it is, the more it concerns general resources.
 
 Permissions can be of two types:

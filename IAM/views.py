@@ -66,3 +66,27 @@ class PermissionViewSet(viewsets.ModelViewSet):
     queryset = Permission.objects.all()
     serializer_class = PermissionSerializer
     permission_classes = [CRUDPermissions]
+
+    # override queryset filtering
+    def get_queryset(self):
+        query = super(PermissionViewSet, self).get_queryset()
+        if not self.request.user.is_superuser:
+            # Get all group permission ids for the user
+            group_permissions = set()
+            for group in self.request.user.groups.all():
+                group_permissions |= set(group.permissions.values_list('id', flat=True))
+
+            # Get (union) all permission ids for the user
+            all_permissions = group_permissions | set(
+                self.request.user.user_permissions.values_list('id', flat=True))
+
+            # Get all group permission objects for the user
+            permission_ids = Permission.objects.filter(id__in=all_permissions)
+
+            max_degree = 0
+            if permission_ids:
+                from django.db.models import Max
+                max_degree = permission_ids.aggregate(Max('degree'))['degree__max']
+            # filter by max degree of permission that the user has
+            query = query.filter(degree__lte=max_degree)
+        return query
